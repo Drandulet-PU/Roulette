@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='index.css') }}">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модальное окно</title>
+</head>
+<body>
+
+    <!-- Кнопка для открытия модального окна -->
+	<div class="centered-container">
+		{% block body %}
+		{% endblock %}
+		<h1>Мы очень крутые</h1>
+		<h1>Мы в потоке</h1>
+		<button id="openModalBtn"><h2>Заглянуть за сцену</h2></button>
+		<h1>COMING SOON</h1>
+		<h1>WARNIN ALARM</h1>
+	</div>
+
+    <!-- Модальное окно -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p>Ваш IQ должен быть выше 30<p>
+            <button id="redirectBtn">Пройти тест</button>
+        </div>
+    </div>
+
+    <script>
+        // Получаем элементы
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("openModalBtn");
+        var span = document.getElementsByClassName("close")[0];
+        var redirectBtn = document.getElementById("redirectBtn");
+
+        // Когда пользователь нажимает на кнопку, открыть модальное окно
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // Когда пользователь нажимает на <span> (x), закрыть окно
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Когда пользователь нажимает за пределами модального окна, закрыть его
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Когда пользователь нажимает кнопку "Перейти", выполняется редирект
+        redirectBtn.onclick = function() {
+            window.location.href = "{{ url_for('iq') }}";  // Укажите ваш маршрут
+        }
+    </script>
+
+</body>
+</html>

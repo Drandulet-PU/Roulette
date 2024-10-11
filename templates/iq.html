@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='iq.css') }}">
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рулетка</title>
+</head>
+<body>
+
+    <div class="roulette-container">
+        <div class="roulette" id="roulette">
+            <!-- Сектора рулетки -->
+            <div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+    </div>
+
+    <button class="button" id="spinButton">Пройти тест</button>
+	<span ><a href="{{ url_for('index') }}">Назад в меню</a></span>
+
+    <!-- Всплывающее окно -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span id="modalText">Ваш IQ: <strong></strong></span>
+            <span id="modalName">Вы: <strong></strong></span>
+            <br>
+            <img id="resultImage" src="" alt="Результат" >
+            <br><br>
+			<span id="lol">Вы слишком тупой(((((9(</span>
+            <button id="closeModal">Попробовать снова</button>
+        </div>
+    </div>
+
+    <script>
+        const roulette = document.getElementById('roulette');
+        const spinButton = document.getElementById('spinButton');
+        const resultModal = document.getElementById('resultModal');
+        const modalText = document.getElementById('modalText');
+        const closeModal = document.getElementById('closeModal');
+
+        let currentDegree = 0;  // Текущий угол вращения
+        let spinning = false;
+
+        spinButton.onclick = function() {
+            if (spinning) return; // Блокируем кнопку во время вращения
+            spinning = true; // Блокируем кнопку
+
+            const randomDegree = Math.floor(Math.random() * 360) + 3600; // Минимум 10 оборотов
+            currentDegree += randomDegree;  // Добавляем к текущему углу
+            roulette.style.transition = "transform 5s cubic-bezier(0.1, 0.6, 0.2, 1)"; // Плавное и длительное замедление
+            roulette.style.transform = `rotate(${currentDegree}deg)`;
+
+            // Обрабатываем окончание анимации
+            roulette.addEventListener('transitionend', function() {
+                fetch('/spin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    modalText.querySelector('strong').innerText = data.result;
+                    modalName.querySelector('strong').innerText = data.name;
+                    resultImage.src = data.image; // Устанавливаем путь к изображению
+                    resultImage.style.display = "block"; // Показываем изображение
+                    resultModal.style.display = "block"; // Показываем всплывающее окно
+                });
+
+                spinning = false; // Разблокируем кнопку
+            }, { once: true }); // Слушаем событие только один раз
+        };
+
+        // Закрытие всплывающего окна
+        closeModal.onclick = function() {
+            resultModal.style.display = "none";
+        };
+
+        // Закрытие окна при клике вне модалки
+        window.onclick = function(event) {
+            if (event.target == resultModal) {
+                resultModal.style.display = "none";
+            }
+        };
+    </script>
+
+</body>
+</html>

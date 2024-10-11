@@ -1,0 +1,80 @@
+		* {
+			box-sizing: border-box; /* Устанавливаем box-sizing для всех элементов */
+		}
+
+		body {
+			display: flex;
+			flex-direction: column; /* Вертикальное выравнивание */
+			align-items: center; /* Центрируем по горизонтали */
+			justify-content: center; /* Центрируем по вертикали */
+			margin: 0; /* Убираем отступы у body */
+			font-family: Arial, sans-serif; /* Устанавливаем шрифт */
+		}
+		
+        .roulette {
+            width: 300px;
+            height: 300px;
+            border: 5px solid black;
+            border-radius: 50%;
+            position: relative;
+            margin: 50px auto;
+            background: conic-gradient(
+                red 0deg 60deg, 
+                green 60deg 120deg, 
+                blue 120deg 180deg, 
+                yellow 180deg 240deg, 
+                orange 240deg 300deg, 
+                purple 300deg 360deg
+            );
+            transition: transform 5s cubic-bezier(0.1, 0.6, 0.2, 1);
+        }
+
+        .button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Стили для всплывающего окна */
+        .modal {
+			padding: 20px;
+            display: none;
+            position: fixed; /* Позиция фиксированная для всей страницы */
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%; /* Полная высота */
+            background-color: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
+            overflow: auto; /* Прокрутка содержимого */
+        }
+
+        .modal-content {
+            display: flex; /* Используем flexbox */
+            flex-direction: column; /* Вертикальное расположение */
+            align-items: center; /* Центрируем по горизонтали */
+            justify-content: center; /* Центрируем по вертикали */
+            background-color: white;
+            margin: 5% auto; /* Отступы сверху и снизу */
+            padding: 20px; /* Внутренние отступы */
+            width: 90%; /* Ширина модального окна */
+            max-width: 600px; /* Максимальная ширина */
+            border-radius: 10px; /* Скругление углов */
+        }
+
+        #resultImage {
+            width: 100%;  /* Ширина изображения в 100% */
+            height: auto; /* Автоматическая высота, чтобы сохранить пропорции */
+            max-width: 500px; /* Максимальная ширина изображения */
+            display: none; /* Изначально скрыто */
+        }
